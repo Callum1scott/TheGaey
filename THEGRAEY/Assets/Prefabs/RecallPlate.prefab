@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 6818108478102900005}
   - component: {fileID: 3515735214531060710}
   m_Layer: 0
-  m_Name: DashRecallPlate
+  m_Name: RecallPlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2354986545842036210
 Transform:
   m_ObjectHideFlags: 0
