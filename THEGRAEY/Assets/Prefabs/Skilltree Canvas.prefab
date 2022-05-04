@@ -866,7 +866,6 @@ GameObject:
   - component: {fileID: 7538889471971329788}
   - component: {fileID: 7538889471971329789}
   - component: {fileID: 7538889471971329790}
-  - component: {fileID: 5391077368653678391}
   m_Layer: 5
   m_Name: Skilltree Canvas
   m_TagString: Untagged
@@ -1011,24 +1010,6 @@ MonoBehaviour:
   Wall_2_Color: {fileID: 21300000, guid: 29419f7b3c24b454f95d7021f36936b4, type: 3}
   Wall_2_Grey: {fileID: 0}
   Wall_2_Button: {fileID: 7538889471595888373}
---- !u!114 &5391077368653678391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7538889471971329791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc67d4a1cd6d0e54f916645ada49b0e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  skillTree: {fileID: 7538889471971329791}
-  TogMap: {fileID: 0}
-  HUD: {fileID: 0}
-  MiniMap: {fileID: 0}
-  Camera: {fileID: 0}
-  Pause: {fileID: 0}
 --- !u!1 &7538889472005563915
 GameObject:
   m_ObjectHideFlags: 0
