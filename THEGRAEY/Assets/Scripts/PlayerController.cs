@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     //public float mouseSensitivity;
     public GameObject playerCam;
     public GameObject recallPlate;
-    public GameObject recallText;
     public GameObject plainSightLight;
     public GameObject flashlight;
     public GameObject lightning;
@@ -90,7 +89,6 @@ public class PlayerController : MonoBehaviour
         recallPlateHeld = false;
         plainSightLight.SetActive(false);
         recallPlate.SetActive(false);
-        recallText.SetActive(false);
         flashlight.SetActive(false);
         lightning.SetActive(false);
         flashlightOn = false;
@@ -635,7 +633,6 @@ public class PlayerController : MonoBehaviour
             RecallUnlocked = true;
             collision.gameObject.SetActive(false);
             recallPlate.SetActive(true);
-            recallText.SetActive(true);
             recallPlate.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1f, this.transform.position.z);
         }
 

@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     private bool playerSpotted;
     private int point;
     private GameObject player; //player object to interact with and orbit around
+    public GameObject shockParticle; //Particle object for enemy stunned
     private Vector3[] patrolPoints;
     private PlayerController playerController;
     public float moveSpeed;
@@ -27,6 +28,7 @@ public class EnemyController : MonoBehaviour
         playerController = player.GetComponent<PlayerController>();
         playerSpotted = false;
         enemyRB = this.GetComponent<Rigidbody>();
+        shockParticle.SetActive(false);
     }
 
     private void Update()
@@ -34,8 +36,11 @@ public class EnemyController : MonoBehaviour
         int layerMask = LayerMask.GetMask("Enemy", "Player");
         layerMask = ~layerMask;
 
-        Debug.DrawLine(this.transform.position, player.transform.position, Color.red);
-        if(Physics.Linecast(this.transform.position, player.transform.position, layerMask))
+        Debug.DrawLine(this.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z), Color.green);
+        Debug.DrawLine(this.transform.position, player.transform.position, Color.yellow);
+        Debug.DrawLine(this.transform.position, new Vector3(player.transform.position.x, player.transform.position.y - 1f, player.transform.position.z), Color.red);
+
+        if (Physics.Linecast(this.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z), layerMask) && Physics.Linecast(this.transform.position, player.transform.position, layerMask) && Physics.Linecast(this.transform.position, new Vector3(player.transform.position.x, player.transform.position.y - 1f, player.transform.position.z), layerMask))
         {
             Debug.Log("No LOS");
         }
@@ -46,6 +51,30 @@ public class EnemyController : MonoBehaviour
             {
                 playerController.drainBatteryPerSecond(25);
             }
+
+            // add orbitAround to orbit/attack case
+            if (!isStunned && Vector3.Distance(player.transform.position, transform.position) < orbitRange)
+            {
+                orbitAround();
+            }
+            if (!isStunned && Vector3.Distance(player.transform.position, transform.position) > orbitRange && Vector3.Distance(player.transform.position, transform.position) < chaseRange)
+            {
+                chase();
+            }
+            else
+            {
+                /*transform.LookAt(patrolPoints[point - 1]);
+                transform.position += transform.forward * moveSpeed * Time.deltaTime; //Move forward towards position*/
+            }
+        }
+
+        if(isStunned)
+        {
+            shockParticle.SetActive(true);
+        }
+        else
+        {
+            shockParticle.SetActive(false);
         }
 
         /*RaycastHit hit;
@@ -59,21 +88,6 @@ public class EnemyController : MonoBehaviour
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
             Debug.Log("Did not Hit");
         }*/
-
-        // add orbitAround to orbit/attack case
-        if (!isStunned && Vector3.Distance(player.transform.position, transform.position) < orbitRange)
-        {
-            orbitAround();
-        }
-        if (!isStunned && Vector3.Distance(player.transform.position, transform.position) > orbitRange && Vector3.Distance(player.transform.position, transform.position) < chaseRange)
-        {
-            chase();
-        }
-        else
-        {
-            /*transform.LookAt(patrolPoints[point - 1]);
-            transform.position += transform.forward * moveSpeed * Time.deltaTime; //Move forward towards position*/
-        }
     }
 
     // Update is called once per frame
