@@ -25,6 +25,11 @@ public class Companion : MonoBehaviour
     private void Update()
     {
         body.transform.LookAt(player.transform);
+
+        if(Input.GetKeyDown(KeyCode.LeftControl) && companionAS.isPlaying)
+        {
+            skipLines();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,6 +47,13 @@ public class Companion : MonoBehaviour
         playerCon.setCanInput(false);
         playerCon.setBatteryHolder(playerCon.getBatteryLife());
         yield return new WaitForSeconds(clipLength);
+        playerCon.setCanInput(true);
+    }
+
+    public void skipLines()
+    {
+        StopAllCoroutines();
+        companionAS.Pause();
         playerCon.setCanInput(true);
     }
 }
