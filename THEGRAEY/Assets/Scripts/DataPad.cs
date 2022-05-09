@@ -8,6 +8,7 @@ public class DataPad : MonoBehaviour
     public AudioClip logAudioClip;
 
     private bool isPlay;
+    private bool hasPlayed;
 
     public void Start()
     {
@@ -15,6 +16,7 @@ public class DataPad : MonoBehaviour
         audioSource.clip = logAudioClip;
 
         isPlay = false;
+        hasPlayed = false;
     }
 
     private void Update()
@@ -34,10 +36,10 @@ public class DataPad : MonoBehaviour
         
         if (other.gameObject.CompareTag("Player"))
         {
-            if(isPlay == false)
+            if(isPlay == false && hasPlayed == false)
             {
                 audioSource.Play();
-                
+                hasPlayed = true;
             }
             else
             {

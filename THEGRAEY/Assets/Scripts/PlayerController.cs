@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     //private variables
     private int jumpsLeft;
     private int jumpMax;
+    private float batteryHolder;
     private float dashForce;
     private bool isCrouching;
     private bool isGrounded;
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool isSprinting;
     private bool plainSightActive;
     private bool recallPlateHeld;
+    private bool canInput;
     private Rigidbody playerRB;
     private CapsuleCollider playerCollider;
     //Unlock Bools
@@ -66,6 +68,8 @@ public class PlayerController : MonoBehaviour
     public Text batteryText;
     //Enemy
     private int enemiesDraining;
+    //Cannons
+    public GameObject doubleJumpCannon;
 
     //SFX
     
@@ -86,9 +90,9 @@ public class PlayerController : MonoBehaviour
         isSprinting = false;
         isWallRunning = false;
         isCharging = false;
-        recallPlateHeld = false;
+        canInput = true;
         plainSightLight.SetActive(false);
-        recallPlate.SetActive(false);
+        recallPlate.SetActive(true);
         flashlight.SetActive(false);
         lightning.SetActive(false);
         flashlightOn = false;
@@ -105,99 +109,12 @@ public class PlayerController : MonoBehaviour
         batterySlider.value = batteryLife;
         enemiesDraining = 0;
         checkpointReached = GetInt("checkpointReached");
-        if(checkpointReached == 0)
-        {
-            dashUnlocked = false;
-            doubleJumpUnlocked = false;
-            wallRunUnlocked = false;
-            extendedDashUnlocked = false;
-            jumpDashUnlocked = false;
-            slamUnlocked = false;
-            RecallUnlocked = false;
-            plainSightUnlocked = false;
-            hoverUnlocked = false;
-            wallGrabUnlocked = false;
-        }
-        if (checkpointReached == 1)
-        {
-            dashUnlocked = true;
-            GameObject.Find("DashIntro").SetActive(false);
-            doubleJumpUnlocked = true;
-            GameObject.Find("DoubleJumpIntro").SetActive(false);
-            wallRunUnlocked = true;
-            GameObject.Find("WallRunIntro").SetActive(false);
-            extendedDashUnlocked = false;
-            jumpDashUnlocked = false;
-            slamUnlocked = false;
-            RecallUnlocked = false;
-            plainSightUnlocked = false;
-            hoverUnlocked = false;
-            wallGrabUnlocked = false;
-        }
-        if (checkpointReached == 2)
-        {
-            dashUnlocked = true;
-            GameObject.Find("DashIntro").SetActive(false);
-            doubleJumpUnlocked = true;
-            GameObject.Find("DoubleJumpIntro").SetActive(false);
-            wallRunUnlocked = true;
-            GameObject.Find("WallRunIntro").SetActive(false);
-            extendedDashUnlocked = true;
-            GameObject.Find("ExtendedDashIntro").SetActive(false);
-            slamUnlocked = true;
-            GameObject.Find("SlamIntro").SetActive(false);
-            wallGrabUnlocked = true;
-            GameObject.Find("WallGrabIntro").SetActive(false);
-            jumpDashUnlocked = false;
-            RecallUnlocked = false;
-            plainSightUnlocked = false;
-            hoverUnlocked = false;
-        }
-        if (checkpointReached == 3)
-        {
-            dashUnlocked = true;
-            GameObject.Find("DashIntro").SetActive(false);
-            doubleJumpUnlocked = true;
-            GameObject.Find("DoubleJumpIntro").SetActive(false);
-            wallRunUnlocked = true;
-            GameObject.Find("WallRunIntro").SetActive(false);
-            extendedDashUnlocked = true;
-            GameObject.Find("ExtendedDashIntro").SetActive(false);
-            slamUnlocked = true;
-            GameObject.Find("SlamIntro").SetActive(false);
-            wallGrabUnlocked = true;
-            GameObject.Find("WallGrabIntro").SetActive(false);
-            jumpDashUnlocked = true;
-            GameObject.Find("JumpDashIntro").SetActive(false);
-            RecallUnlocked = true;
-            GameObject.Find("RecallIntro").SetActive(false);
-            plainSightUnlocked = true;
-            GameObject.Find("PlainSightIntro").SetActive(false);
-            hoverUnlocked = true;
-            GameObject.Find("HoverIntro").SetActive(false);
-        }
+        doubleJumpCannon.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Checkpoint
-        if(dashUnlocked && doubleJumpUnlocked && wallRunUnlocked)
-        {
-            SetInt("checkpointReached", 1);
-            t1 = true;
-        }
-        if(t1 && extendedDashUnlocked && slamUnlocked && wallGrabUnlocked)
-        {
-            SetInt("checkpointReached", 2);
-            t2 = true;
-        }
-        if(t1 && t2 && jumpDashUnlocked && RecallUnlocked && plainSightUnlocked && hoverUnlocked)
-        {
-            SetInt("checkpointReached", 3);
-            t3 = true;
-        }
-
         //Crouch Toggle
         if (Input.GetKeyDown(KeyCode.C) && !isCrouching)
         {
@@ -297,7 +214,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jump Dash
-        if (Input.GetKeyDown(KeyCode.E) && jumpDashUnlocked && !isGrounded && jumpDashCooldown == 0f)
+        if (canInput && Input.GetKeyDown(KeyCode.E) && jumpDashUnlocked && !isGrounded && jumpDashCooldown == 0f)
         {
             batteryLife -= 15;
             playerRB.AddForce(playerCam.transform.forward * 75f, ForceMode.Impulse);
@@ -335,7 +252,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out plateHit, 3f) && Input.GetKey(KeyCode.T))
         {
             Debug.Log(plateHit.collider.gameObject.name);
-            if(plateHit.collider.gameObject.name == "RecallPlate")
+            if(plateHit.collider.gameObject.name == "RecallHologram")
             {
                 recallPlateHeld = true;
                 recallPlate.SetActive(false);
@@ -343,7 +260,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Recall
-        if (RecallUnlocked && Input.GetKeyDown(KeyCode.R) && RecallCooldown == 0f && !recallPlateHeld)
+        if (canInput && RecallUnlocked && Input.GetKeyDown(KeyCode.R) && RecallCooldown == 0f && !recallPlateHeld)
         {
             transform.position = new Vector3(recallPlate.transform.position.x, recallPlate.transform.position.y + 1f, recallPlate.transform.position.z);
             RecallCooldown = 60f;
@@ -374,7 +291,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Wall Grab
-        if(Physics.Raycast(this.transform.position, transform.forward, 1.5f) && Input.GetKey(KeyCode.Q) && wallGrabUnlocked)
+        if(canInput && Physics.Raycast(this.transform.position, transform.forward, 1.5f) && Input.GetKey(KeyCode.Q) && wallGrabUnlocked)
         {
             playerRB.velocity = new Vector3(0f, 10f, 0f);
         }
@@ -393,7 +310,10 @@ public class PlayerController : MonoBehaviour
         }
 
         //Player walk
-        playerRB.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") / moveSpeed) + (transform.right * Input.GetAxis("Horizontal") / moveSpeed));
+        if(canInput)
+        {
+            playerRB.MovePosition(transform.position + (transform.forward * Input.GetAxis("Vertical") / moveSpeed) + (transform.right * Input.GetAxis("Horizontal") / moveSpeed));
+        }
 
         //Cooldown Timers
         //Dash Cooldown
@@ -527,6 +447,11 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("Death");
         }
 
+        if(!canInput)
+        {
+            batteryLife = batteryHolder;
+        }
+
         //Raycast Test
         Debug.DrawRay(transform.position, playerCam.transform.TransformDirection(Vector3.forward) * 13, Color.blue);
 
@@ -597,6 +522,7 @@ public class PlayerController : MonoBehaviour
             doubleJumpUnlocked = true;
             jumpsLeft = 2;
             collision.gameObject.SetActive(false);
+            doubleJumpCannon.SetActive(true);
         }
 
         //Jump Dash Unlock Pickup
@@ -632,8 +558,8 @@ public class PlayerController : MonoBehaviour
         {
             RecallUnlocked = true;
             collision.gameObject.SetActive(false);
-            recallPlate.SetActive(true);
-            recallPlate.transform.position = new Vector3(this.transform.position.x, this.transform.position.y - 1f, this.transform.position.z);
+            recallPlate.SetActive(false);
+            recallPlateHeld = true;
         }
 
         //PlainSight Unlock Pickup
@@ -726,5 +652,15 @@ public class PlayerController : MonoBehaviour
     public void drainBatteryPerSecond(float multiplier)
     {
         batteryLife -= Time.deltaTime * multiplier;
+    }
+
+    public void setCanInput(bool tf)
+    {
+        canInput = tf;
+    }
+
+    public void setBatteryHolder(float holder)
+    {
+        batteryHolder = holder;
     }
 }

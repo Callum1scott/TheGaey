@@ -7,7 +7,7 @@ public class AudioMAnager : MonoBehaviour
     // Start is called before the first frame update
     public AudioClip SlamIntro;
     public AudioClip WallGrabIntro;
-    public AudioClip DashRecallIntro;
+    public AudioClip RecallIntro;
     public AudioClip DashIntro;
     public AudioClip DoubleJumpIntro;
     public AudioClip WallRunIntro;
@@ -76,9 +76,9 @@ public class AudioMAnager : MonoBehaviour
             Player.clip = ExtendedDashIntro;
             Player.Play();
         }
-        if (other.gameObject.name == "DashRecallIntro")
+        if (other.gameObject.name == "RecallIntro")
         {
-            Player.clip = DashRecallIntro;
+            Player.clip = RecallIntro;
             Player.Play();
         }
         if (other.gameObject.name == "PlainSightIntro")
