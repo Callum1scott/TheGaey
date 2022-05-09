@@ -20,7 +20,10 @@ public class DroneCannonScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Rigidbody cannonTarget = other.GetComponent<Rigidbody>();
-        cannonTarget.velocity = direction * cannonStrength;
+        if(other.gameObject.CompareTag("Player"))
+        {
+            Rigidbody cannonTarget = other.GetComponent<Rigidbody>();
+            cannonTarget.velocity = direction * cannonStrength;
+        }
     }
 }
