@@ -179,7 +179,7 @@ public class PlayerController : MonoBehaviour
         {
             playerRB.velocity = new Vector3(playerRB.velocity.x, 0, playerRB.velocity.z);
             playerRB.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            audioManager.PlaySFX("Double Jump");
+            audioManager.PlaySFX("DoubleJump");
             jumpsLeft--;
             batteryLife -= 10;
         }
@@ -406,7 +406,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                batteryLife += Time.deltaTime * 50;
+                batteryLife += Time.deltaTime * 100;
             }
         }
         else if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
@@ -620,7 +620,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.CompareTag("JumpPad"))
         {
-            audioManager.PlaySFX("Jump Pad");
+            audioManager.PlaySFX("JumpPad");
         }
     }
     
