@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        int layerMask = LayerMask.GetMask("Enemy", "Player");
+        int layerMask = LayerMask.GetMask("Enemy", "Player", "Triggers");
         layerMask = ~layerMask;
 
         Debug.DrawLine(this.transform.position, new Vector3(player.transform.position.x, player.transform.position.y + 1f, player.transform.position.z), Color.green);

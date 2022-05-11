@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
     //Cannons
     public GameObject doubleJumpCannon;
 
+
     //SFX
     
     
@@ -481,6 +482,13 @@ public class PlayerController : MonoBehaviour
                     {
                         StartCoroutine(enemyCon.Stunned());
                     }
+                }
+
+                if(hit.collider.gameObject.name == "Shield Cannon")
+                {
+                    LaserBreaker laserCon;
+                    laserCon = hit.collider.gameObject.GetComponent<LaserBreaker>();
+                    laserCon.turnOff();
                 }
             }
         }
