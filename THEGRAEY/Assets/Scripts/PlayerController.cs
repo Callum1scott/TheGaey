@@ -406,7 +406,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                batteryLife += Time.deltaTime * 50;
+                batteryLife += Time.deltaTime * 100;
             }
         }
         else if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D))
